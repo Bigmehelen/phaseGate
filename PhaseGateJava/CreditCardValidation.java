@@ -22,7 +22,7 @@ public class CreditCardValidation{
 
   public static String validateCard(String theNumber){
 
-	if(theNumber.length() <= 13 || theNumber.length() > 16){
+	if(theNumber.length() < 13 || theNumber.length() > 16){
 		return "Invalid Card Length";
 	}
 
