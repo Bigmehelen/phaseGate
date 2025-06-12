@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.Date;
 public class CheckOutApp{
 	
-	private static List<List<String>> cartItems = new ArrayList<>();
+	static List<List<String>> cartItems = new ArrayList<>();
 
-	public static String printHeader(String name){
+	public static String printHeader(String cashierName , String name){
 	LocalDate todayDate = LocalDate.now();
 	Date today = new Date();
 	String message = """
@@ -15,13 +15,13 @@ MAIN BRANCH
 LOCATION: 312, HERBERT MACAULAY WAY, SABO YABA, LAGOS.
 TEL: 08088406240
 Date: %s   %tT
-Cashier: Heaven
+Cashier: %s
 Customer Name: %s
 
 ========================================================
-		ITEMS	QTY	PRICE	TOTAL(NGN)
+	ITEMS	QTY	PRICE	TOTAL(NGN)
 --------------------------------------------------------
-	""".formatted(todayDate,today,name);
+	""".formatted(todayDate,today,cashierName,name);
 	return message;
 	}
 
@@ -36,73 +36,131 @@ Customer Name: %s
 
 	public static List<List<String>> total(){
 		for(int count = 0; count < cartItems.size(); count++){
-			for(int counter = 0; counter < cartItem.get(counter).size(); counter++){
-			int theQuantity = Integer.parseInt(cartItems.get(1));
-			double thePrice = Double.parseDouble(cartItems.get(2));
+		if(cartItems.size() < 4){
+			int theQuantity = Integer.parseInt(cartItems.get(count).get(1));
+			double thePrice = Double.parseDouble(cartItems.get(count).get(2));
 			double total = theQuantity * thePrice;
 			String allTotal = String.valueOf(total);
-			cartItems.add(allTotal);
+			cartItems.get(count).add(allTotal);
 			}
 		}
 		return cartItems;
 	}
 
-	/*public static String subTotal(){
+	public static void printTotal(){
+	List<List<String>> cartnewItems = total();
+	for(int count = 0; count < cartnewItems.size(); count++){
+		for(int counter = 0; counter < cartnewItems.get(count).size(); counter++){
+			System.out.print("\t" + cartnewItems.get(count).get(counter));
+		}
+		System.out.println();
+	}
+
+	}
+
+	public static String theSubTotal(){
 		double total = 0;
+		String subTotal = "";
+		double allTotal = 0;;
 		for(int count = 0; count < cartItems.size(); count++){
-			for(int counter = 0; counter < cartItem.get(counter).size(); counter++){
-				int theQuantity = Integer.parseInt(quantity);
-				double thePrice = Double.parseDouble(price);
-				double total = theQuantity * thePrice;
+			for(int counter = 0; counter < cartItems.get(count).size(); counter++){
+				int theQuantity = Integer.parseInt(cartItems.get(count).get(1));
+				double thePrice = Double.parseDouble(cartItems.get(count).get(2));
+				total = theQuantity * thePrice;
 			}
-			double allTotal = allTotal + total;
-			String subTotal = String.valueOf(allTotal);
+			 allTotal = allTotal + total;
+			subTotal = String.valueOf(allTotal);
 		}
 		return subTotal;
 
 	}
 
-	public static String itemDiscount(String discount){
-		
-		double theDiscount = Double.parseDouble(discount/100);
-		double allDiscount = theDiscount * subTotal();
-		String discounts = String.valueOf(allDiscount);
-		return discounts;
+	public static String itemDiscount(String discounts){
+		double theDiscount = Double.parseDouble(discounts); 
+		double itemSubTotal = Double.parseDouble(theSubTotal());
+		double allDiscount = (theDiscount / 100) * itemSubTotal;
+		String discount = String.valueOf(allDiscount);
+		return discount;
 	}
-	Final double vat = 0.175;
+
+	static double vat = 0.175;
 	public static String itemVat(){
-		double theVat = vat * subTotal();
-		String allVat = string.valueOf(theVat);
+		double theVat = Double.parseDouble(theSubTotal());
+		double vats = theVat * vat;
+		String allVat = String.format("%.2f",vats);
 		return allVat;
 	}
-	
-	public static String billTotal(){
-		double subTotal = Double.parseDouble(subTotal()); 
-		double discount = Double.parseDouble(itemDiscount(discount);
-		double theBillTotal = subTotal() + vat() - discount;
+
+	public static String billTotal(String discount){
+		double subTotal = Double.parseDouble(theSubTotal()); 
+		double theDiscount = Double.parseDouble(itemDiscount(discount));
+		double value = Double.parseDouble(itemVat());
+		double theBillTotal = subTotal + value - theDiscount;
 		String allBillTotal = String.valueOf(theBillTotal);
 		return allBillTotal;
 	}
+	public static String printDiscount(String discount){
+		String itemSubTotal = theSubTotal();
+		String discounts = itemDiscount(discount);
+		String vatValue = itemVat();
+		String billTotal = billTotal(discount);
+		String message = """
+---------------------------------------------------------
+	Sub Total : 	%s 
+	Discount :	%s
 
-	public static String paymentMade(String payment){
-		double itemPayment = Double.parseDouble(payment);
-		double allPayment = itemPayment - billTotal();
-		String thePayment = String.valueOf(allPayment)
+	Vat @ 17.50 :	%s
+=========================================================
+	Bill Total:  	%s
+=========================================================
+THIS IS NOT A RECEIPT KINDLY PAY 	%s
+
+			""".formatted(itemSubTotal, discounts, vatValue,billTotal,billTotal);
+	return message;
+	}
+	
+	public static String amount(String costPaid){
+		double theCostPaid = Double.parseDouble(costPaid);
+		String valueCostPaid = String.valueOf(theCostPaid);
+		return valueCostPaid;
+	}
+
+	public static String balance(String bill , String cost){
+		double theBillTotal = Double.parseDouble(billTotal(bill));
+		double theAmount = Double.parseDouble(amount(cost));
+		double paymentValue = theAmount - theBillTotal;
+		double payment = Math.abs(paymentValue);
+		String thePayment = String.format("%.2f", payment);
 		return thePayment;
 
-	}*/
+	}
 
-	public static void main (String[] args){
-		String customer = "Helen";
-		System.out.print(printHeader(customer));
+	public static String printBillTotal(String bill, String costPaid){
+		String bills = billTotal(bill);
+		String theAmount = amount(costPaid);
+		String theBalance = balance(bill,costPaid);                
+		String message = """
 
-		String item = "corn";
-		String quantity = "2";
-		String price = "300";
-		System.out.print(total());
+	Bill Total : 	%s
+	Amount paid:	%s
+	Balance: 	%s
 
+==========================================================
+	THANK YOU FOR YOUR PATRONAGE
+==========================================================
+		""".formatted(bills, theAmount, theBalance);
+		return message;
+	}
+	public static void printFirstBill(String cashierName, String name, String discount ){
+		System.out.println(printHeader(cashierName , name));
+		printTotal();
+		System.out.println(printDiscount(discount));
+	}
+	
+	public static void printFinalBill(String cashierName, String name, String amount, String balance ){
+		printHeader(cashierName , name);
+		System.out.print(printBillTotal(balance ,amount));
+	}
 		
-
-		}
 
 }
