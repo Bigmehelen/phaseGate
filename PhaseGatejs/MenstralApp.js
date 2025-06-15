@@ -1,76 +1,71 @@
-const tracker = function(previousPeriod, currentPeriod){
+module.exports = {tracker, expectingNextPeriod, checkRegularOrNot, fertileWindow}
 
-	const parseDate = (dateStr) =>{
-	const [day, month, year] = dateStr.split('-').map(Number);
-	return new Date(year, month - 1, day); 
-  	};
-
-  	const previousDate = parseDate(previousPeriod);
-  	const currentDate = parseDate(currentPeriod);
-
-  	const millisecondsPerDay = 1000 * 60 * 60 * 24;
-  	const length = Math.floor((currentDate - previousDate) / millisecondsPerDay);
-
-  return length.toString();
-}
-
-const expectingNextPeriod = function(lastPeriod, cycleLength){
- 
-	const [day, month, year] = lastPeriod.split('-').map(Number);
-	const lastStart = new Date(year, month - 1, day); 
-
-	lastStart.setDate(lastStart.getDate() + cycleLength);
-
-	const formattedDate = lastStart.toLocaleDateString('en-GB')
-        .split('/')
-        .map(part => part.padStart(2, '0'))
-        .join('-');
-
-    return formattedDate;
-}
-
-const checkRegularOrNot = function(periodDates, cycleLength){
-	const actualCycleLengths = [];
-
-	for (let i = 1; i < periodDates.length; i++){
-	const previous = new Date(periodDates[i - 1].split('-').reverse().join('-'));
-	const current = new Date(periodDates[i].split('-').reverse().join('-'));
+const tracker = function(currentPeriod, cycleLength) {
+   
+    const [day, month, year] = currentPeriod.split('-').map(Number);
     
-	const diffTime = current - previous;
-	const cycle = diffTime / (1000 * 60 * 60 * 24); // Convert milliseconds to days
-	actualCycleLengths.push(cycle);
+    const currentDate = new Date(year, month - 1, day); 
+    
+    currentDate.setDate(currentDate.getDate() + cycleLength);
+    
+    const nextDay = String(currentDate.getDate()).padStart(2, '0');
+    const nextMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // month is 0-indexed
+    const nextYear = currentDate.getFullYear();
 
-	}
-
-	for (const cycle of actualCycleLengths){
-		if (Math.abs(cycle - cycleLength) > 2){
-			return "Irregular";
-		}
-	}
-
-	return "Regular";
+    return `${nextDay}-${nextMonth}-${nextYear}`;
 }
 
-const fertileWindow = function(startDate, cycleLength){
-  
-	const [day, month, year] = startDate.split('-').map(Number);
-	const lastPeriodStartDate = new Date(year, month - 1, day);
+constt fertileWindow = function(currentPeriod, cycleLength) {
+    const formatter = (date) => {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    };
 
-  	const ovulationDate = new Date(lastPeriodStartDate);
-	ovulationDate.setDate(ovulationDate.getDate() + (cycleLength - 14));
+    const trackerDate = tracker(currentPeriod, cycleLength);
+    const [tDay, tMonth, tYear] = trackerDate.split('-').map(Number);
+    const periodDate = new Date(tYear, tMonth - 1, tDay);
 
-	const fertileStart = new Date(ovulationDate);
-	fertileStart.setDate(ovulationDate.getDate() - 5);
+    const ovulationDate = new Date(periodDate);
+    ovulationDate.setDate(ovulationDate.getDate() - 14);
 
-	const fertileEnd = new Date(ovulationDate);
-	fertileEnd.setDate(ovulationDate.getDate() + 1);
+    const fertileStart = new Date(ovulationDate);
+    fertileStart.setDate(fertileStart.getDate() - 5);
 
-const formatDate = (date) =>{
-	const d = String(date.getDate()).padStart(2, '0');
-    	const m = String(date.getMonth() + 1).padStart(2, '0');
-	const y = date.getFullYear();
-	return `${d}-${m}-${y}`;
-};
+    const fertileEnd = new Date(ovulationDate);
+    fertileEnd.setDate(fertileEnd.getDate() + 1);
 
+    return (
+        `Ovulation Date: ${formatter(ovulationDate)}\n` +
+        `Fertile Window: ${formatter(fertileStart)} to ${formatter(fertileEnd)}`
+    );
+}
 return `Ovulation Date: ${formatDate(ovulationDate)}\nFertile Window: ${formatDate(fertileStart)} to ${formatDate(fertileEnd)}`;
 }
+
+
+const checkRegularOrNot = function(periodDates, cycleLength) {
+    const formatter = (dateStr) => {
+        const [day, month, year] = dateStr.split('-').map(Number);
+        return new Date(year, month - 1, day);
+    };
+
+    const actualCycleLengths = [];
+
+    for (let i = 1; i < periodDates.length; i++) {
+        const previous = formatter(periodDates[i - 1]);
+        const current = formatter(periodDates[i]);
+        const diffInDays = (current - previous) / (1000 * 60 * 60 * 24); // convert ms to days
+        actualCycleLengths.push(diffInDays);
+    }
+
+    for (const cycle of actualCycleLengths) {
+        if (Math.abs(cycle - cycleLength) > 2) {
+            return "Irregular";
+        }
+    }
+
+    return "Regular";
+}
+
