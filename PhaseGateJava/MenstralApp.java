@@ -2,7 +2,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 public class MenstralApp{
-	list 
+	
 	public static String tracker(String previousPeriod, String nextPeriod) {
     		int start = Integer.parseInt(previousPeriod);
     		int end = Integer.parseInt(nextPeriod);

@@ -2,28 +2,28 @@ import java.util.Arrays;
 
 public class CardValidation{
 
-	public static String cardNumber(String[] theNumber){
-		int[] cardNums = new int[theNumber.length];
-		for(int counter = 0; counter < cardNums.length; counter++){
-			int eachNum = Integer.parseInt(theNumber[counter]);
-			cardNums[counter] = eachNum;
+	public static String cardNumber(String theNumber){
+		String[] nums = new String[theNumber.length()];
+ 		for(int counter = 0; counter < theNumber.length(); counter++){
+			nums[counter] = String.valueOf(theNumber.charAt(counter));
+
 		}
 		
-		if(cardNums.length < 13 && cardNums.length > 16){
+		if(nums.length < 13 && nums.length > 16){
  			return "Invalid number";
 		}
-		else if(cardNums.length >= 13 && cardNums.length <=16){
+		else if(nums.length >= 13 && nums.length <=16){
 
-			if(cardNums[0] == 4){
+			if(nums[0].equals("4")){
 			return "Visa card";
 			}
-			else if(cardNums[0] == 5){
+			else if(nums[0].equals("5")){
 			return "Master Card";
 			}
-			else if(cardNums[0] == 3 && cardNums[1] == 7){
+			else if(nums[0].equals("3") && nums[1].equals("7")){
 			return "American Express card";
 			}
-			else if (cardNums[0] == 6){
+			else if (nums[0].equals("6")){
 			return "Discovery Card";
 			}
 			else{
@@ -32,27 +32,40 @@ public class CardValidation{
 		}
 		return "heloo";
 	}
+	
+	public static String checkValidation(){
+	String cardNumbers = cardNumber(theNumber);
+	int[] cardNums = new int[theNumber.length()];
+		for(int counter = 0; counter < cardNums.length; counter++){
+		int eachNum = Integer.parseInt(nums[counter]);
+			cardNums[counter] = eachNum;
+		}
 
-	public static String printCreditCart(String[] theNumber){
+
+	}
+	  
+	public static String printCreditCart(String theNumber){
 
 	String theCardNumber = cardNumber(theNumber);
+	
 
 	String message = """
 **************************************************
 **Credit Card Type:	%s
-**Credit Card Number:		
-**Credit Card Digit Length:
+**Credit Card Number:	%s	
+**Credit Card Digit Length:%d
 **Credit Card Validity Status: 
 
 **************************************************
-		""".formatted(theCardNumber);
+		""".formatted(theCardNumber, theNumber, theNumber.length());
 		return message;
 
 	}
 	public static void main (String[] args){
 		
-String[] number = {"3","7","9","9","8","3","1","6","1","9","6","9","0","4","0","3"};
-		System.out.print(printCreditCart(number));
+	String number = "3799831619690403";
+	System.out.print(printCreditCart(number));
+	
 
 	}
 

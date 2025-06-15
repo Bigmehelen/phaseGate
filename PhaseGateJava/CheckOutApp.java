@@ -34,9 +34,13 @@ Customer Name: %s
 		return cartItems;
 	}
 
+	public static void clearCart(){
+    	cartItems.clear();
+	}
+
 	public static List<List<String>> total(){
 		for(int count = 0; count < cartItems.size(); count++){
-		if(cartItems.size() < 4){
+		if(cartItems.size() < 3){
 			int theQuantity = Integer.parseInt(cartItems.get(count).get(1));
 			double thePrice = Double.parseDouble(cartItems.get(count).get(2));
 			double total = theQuantity * thePrice;
