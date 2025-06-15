@@ -1,10 +1,9 @@
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class StudentGrade{
 	
 	static List<List<String>> studentRecords = new ArrayList<>();
+
 	public static List<List<String>> addStudent(String studentName, String subjectOne, String subjectTwo, String subjectThree){
 		List<String> students = new ArrayList<>();
 		students.add(studentName);
@@ -17,30 +16,25 @@ public class StudentGrade{
 	
 	public static List<List<String>> totalScore(){
     		for (int count = 0; count < studentRecords.size(); count++){
-			for(int counter = 0; counter < studentRecords.get(count).size(); counter++){
-				int theSubOne = Integer.parseInt(studentRecords.get(count).get(1));
-				int theSubTwo = Integer.parseInt(studentRecords.get(count).get(2));
-				int theSubThree = Integer.parseInt(studentRecords.get(count).get(3));
-        			int total = theSubOne + theSubTwo + theSubThree;
-				String theTotal = String.valueOf(total);
-				studentRecords.get(count).add(theTotal);
-			}
+			int theSubOne = Integer.parseInt(studentRecords.get(count).get(1));
+			int theSubTwo = Integer.parseInt(studentRecords.get(count).get(2));
+			int theSubThree = Integer.parseInt(studentRecords.get(count).get(3));
+        		int total = theSubOne + theSubTwo + theSubThree;
+			String theTotal = String.valueOf(total);
+			studentRecords.get(count).add(theTotal);
     		}
     		return studentRecords;
 	}
 
 	public static List<List<String>> averageScore(){
 		for(int count = 0; count < studentRecords.size(); count++){
-			for(int counter = 0; counter < studentRecords.get(count).size(); counter++){
-				int theSubOne = Integer.parseInt(studentRecords.get(count).get(1));
-				int theSubTwo = Integer.parseInt(studentRecords.get(count).get(2));
-				int theSubThree = Integer.parseInt(studentRecords.get(count).get(3));
-        			int total = theSubOne + theSubTwo + theSubThree;
-				double average = total / studentRecords.size();
-				String theAverage = String.valueOf(average);
-				studentRecords.get(count).add(theAverage);
-			}
-
+			int theSubOne = Integer.parseInt(studentRecords.get(count).get(1));
+			int theSubTwo = Integer.parseInt(studentRecords.get(count).get(2));
+			int theSubThree = Integer.parseInt(studentRecords.get(count).get(3));
+        		int total = theSubOne + theSubTwo + theSubThree;
+			double average = total / studentRecords.size();
+			String theAverage = String.valueOf(average);
+			studentRecords.get(count).add(theAverage);
 		}
 		return studentRecords;
 	}
