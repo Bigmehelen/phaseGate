@@ -1,9 +1,10 @@
-import java.util.*;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentGrade{
 	
 	static List<List<String>> studentRecords = new ArrayList<>();
-
 	public static List<List<String>> addStudent(String studentName, String subjectOne, String subjectTwo, String subjectThree){
 		List<String> students = new ArrayList<>();
 		students.add(studentName);
@@ -22,7 +23,7 @@ public class StudentGrade{
         		int total = theSubOne + theSubTwo + theSubThree;
 			String theTotal = String.valueOf(total);
 			studentRecords.get(count).add(theTotal);
-    		}
+	    		}
     		return studentRecords;
 	}
 
@@ -35,13 +36,15 @@ public class StudentGrade{
 			double average = total / studentRecords.size();
 			String theAverage = String.valueOf(average);
 			studentRecords.get(count).add(theAverage);
+
+			}
 		}
 		return studentRecords;
 	}
 
 	public static String printList(){
 		StringBuilder builder = new StringBuilder();
-		for(int count = 0; count < studentRecords.size(); count++){
+		for(int count = 0; count < studentRecords .size(); count++){
 			for(int counter = 0; counter < studentRecords.get(count).size(); counter++){
 				builder.append(studentRecords.get(count).get(counter)).append("\t");
 			}
@@ -50,13 +53,13 @@ public class StudentGrade{
 		return builder.toString();
 	}
 
-
+	
 	public static String printStudents(){
 		String thePrintList = printList();
 		
 		String message = """
 ============================================================
-STUDENT		SUB1	SUB2	SUB3	TOT	AVE	POS
+STUDENT\t\tSUB1\tSUB2\tSUB3\tTOT\tAVE\tPOS
 ============================================================
 %s
 
@@ -69,7 +72,7 @@ STUDENT		SUB1	SUB2	SUB3	TOT	AVE	POS
 
 	public static void main (String[] args){
 		addStudent("Student 1", "67", "21", "49");
-		addStudent("Student 2", "98", "62", "52");
+		addStudent("Student 2", "98", "62", "56");
 		addStudent("Student 3", "93", "34", "27");
 		addStudent("Student 4", "78", "83", "66");
 		totalScore();

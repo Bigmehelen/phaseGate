@@ -33,12 +33,13 @@ public class CardValidation{
 		return "heloo";
 	}
 	
-	public static String checkValidation(){
+	public static String checkValidation(String theNumber){
 	String cardNumbers = cardNumber(theNumber);
 	int[] cardNums = new int[theNumber.length()];
-		for(int counter = 0; counter < cardNums.length; counter++){
-		int eachNum = Integer.parseInt(nums[counter]);
+		for(int counter = 0; counter < cardNums.length; counter2+){
+		int eachNum = Integer.parseInt(cardNums[counter]);
 			cardNums[counter] = eachNum;
+			
 		}
 
 
