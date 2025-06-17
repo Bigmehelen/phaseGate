@@ -1,85 +1,46 @@
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class StudentGrade{
-	
-	static List<List<String>> studentRecords = new ArrayList<>();
-	public static List<List<String>> addStudent(String studentName, String subjectOne, String subjectTwo, String subjectThree){
-		List<String> students = new ArrayList<>();
-		students.add(studentName);
-		students.add(subjectOne);
-		students.add(subjectTwo);
-		students.add(subjectThree);
-		studentRecords.add(students);
-		return studentRecords;
-	}
-	
-	public static List<List<String>> totalScore(){
-    		for (int count = 0; count < studentRecords.size(); count++){
-			int theSubOne = Integer.parseInt(studentRecords.get(count).get(1));
-			int theSubTwo = Integer.parseInt(studentRecords.get(count).get(2));
-			int theSubThree = Integer.parseInt(studentRecords.get(count).get(3));
-        		int total = theSubOne + theSubTwo + theSubThree;
-			String theTotal = String.valueOf(total);
-			studentRecords.get(count).add(theTotal);
-	    		}
-    		return studentRecords;
-	}
 
-	public static List<List<String>> averageScore(){
-		for(int count = 0; count < studentRecords.size(); count++){
-			int theSubOne = Integer.parseInt(studentRecords.get(count).get(1));
-			int theSubTwo = Integer.parseInt(studentRecords.get(count).get(2));
-			int theSubThree = Integer.parseInt(studentRecords.get(count).get(3));
-        		int total = theSubOne + theSubTwo + theSubThree;
-			double average = total / studentRecords.size();
-			String theAverage = String.valueOf(average);
-			studentRecords.get(count).add(theAverage);
-
-			}
-		}
-		return studentRecords;
-	}
-
-	public static String printList(){
-		StringBuilder builder = new StringBuilder();
-		for(int count = 0; count < studentRecords .size(); count++){
-			for(int counter = 0; counter < studentRecords.get(count).size(); counter++){
-				builder.append(studentRecords.get(count).get(counter)).append("\t");
-			}
-			builder.append("\n");
-		}
-		return builder.toString();
-	}
-
-	
-	public static String printStudents(){
-		String thePrintList = printList();
+	public static String[][] setDimension(String noOfStudent, String noOfSubject){
+		int student = Integer.parseInt(noOfStudent);
+		int subject = Integer.parseInt(noOfSubject);
+		String studentAndSubject[][] = new String[student][subject];
+		return studentAndSubject;
 		
-		String message = """
-============================================================
-STUDENT\t\tSUB1\tSUB2\tSUB3\tTOT\tAVE\tPOS
-============================================================
-%s
+	}
+	
+	public static String[][] addScore(String[][]studentAndSubject){
+		Scanner sc = new Scanner(system.in);
+		for(int count = 0; count < studentAndSubject.length; count++){
+			for(int counter = 0; counter < studentAndSubject[count].length; counter++){
+			System.out.print("Enter score for student" + (count + 1));
+			System.out.print("Enter score for subject" + (counter + 1));
+			studentAndSubject[count][counter] = sc.nextLine();
 
-============================================================
-============================================================
-			""".formatted(thePrintList);
-	return message;
+			}
+			System.out.print("=====Saved Succefully====");
+		}
+		return studentAndSubject;
+
 	}
 
-
+	
+	
 	public static void main (String[] args){
-		addStudent("Student 1", "67", "21", "49");
-		addStudent("Student 2", "98", "62", "56");
-		addStudent("Student 3", "93", "34", "27");
-		addStudent("Student 4", "78", "83", "66");
-		totalScore();
-		averageScore();
-		System.out.print(printStudents());
+
+	Scanner scanner = new Scanner(system.in);
+	System.out.print("Enter no of student: ");
+	String noOfStudent =  scanner.nextLine();
+	System.out.print("Enter no of subject: ");
+	String noOfsubject = scanner.nextLine();
+	String studentAndSubject[][] = setDimension(noOfStudent, noOfsubject);
+	 studentAndSubject[][] = addScore(studentAndSubject);
 
 
-	}	
 
+	}
+
+	
 }
